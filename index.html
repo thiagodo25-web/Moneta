@@ -166,11 +166,13 @@
     padding: 12px; margin-bottom: 14px; font-size: 0.75rem; display: none; 
   }
 
-  /* NUEVO: Contraste OLED y Estética de Mármol Imperial (Corregido) */
+  /* NUEVO: Contraste OLED y Estética de Mármol Imperial (Fondo Corregido) */
   body.oled {
-    /* Forzamos el fondo de mármol negro pisando el original */
-    background: #030303 url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.015' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.06' style='mix-blend-mode: screen;'/%3E%3C/svg%3E") !important;
-    color: #F2EFE9;
+    background-color: #030303 !important;
+    background-image: 
+      url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.015' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.06' style='mix-blend-mode: screen;'/%3E%3C/svg%3E"), 
+      radial-gradient(ellipse at 50% 0%, rgba(192, 138, 46, 0.15) 0%, transparent 80%) !important;
+    color: #F2EFE9 !important;
   }
   
   /* Tarjetas con efecto vidrio sobre el mármol */
