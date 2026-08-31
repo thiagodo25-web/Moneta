@@ -1,11 +1,14 @@
-// This is the "Offline page" service worker
-
 importScripts('https://storage.googleapis.com/workbox-cdn/releases/5.1.2/workbox-sw.js');
 
-const CACHE = "pwabuilder-page";
+const CACHE = "calculadora-offline-v1";
 
-// TODO: replace the following with the correct offline fallback page i.e.: const offlineFallbackPage = "offline.html";
-const offlineFallbackPage = "ToDo-replace-this-name.html";
+// 1. Cambia esto por la ruta de tu página principal (o archivos estáticos)
+const ASSETS_TO_CACHE = [
+  './',
+  './index.html',
+  './styles.css', // reemplaza por tus archivos reales
+  './app.js'
+];
 
 self.addEventListener("message", (event) => {
   if (event.data && event.data.type === "SKIP_WAITING") {
@@ -13,10 +16,11 @@ self.addEventListener("message", (event) => {
   }
 });
 
-self.addEventListener('install', async (event) => {
+// 2. Guarda los archivos en caché durante la instalación
+self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE)
-      .then((cache) => cache.add(offlineFallbackPage))
+      .then((cache) => cache.addAll(ASSETS_TO_CACHE))
   );
 });
 
@@ -24,16 +28,26 @@ if (workbox.navigationPreload.isSupported()) {
   workbox.navigationPreload.enable();
 }
 
+// 3. Responde con la caché cuando no haya internet
 self.addEventListener('fetch', (event) => {
-  if (event.request.mode === 'navigate') {
-    event.respondWith((async () => {
-      try {
-        const preloadResp = await event.preloadResponse;
+  event.respondWith((async () => {
+    try {
+      // Intenta usar la precarga de red o la red directa
+      const preloadResp = await event.preloadResponse;
+      if (preloadResp) return preloadResp;
 
-        if (preloadResp) {
-          return preloadResp;
-        }
-
+      const networkResp = await fetch(event.request);
+      return networkResp;
+    } catch (error) {
+      // Si la red falla (offline), busca el recurso solicitado en la caché
+      const cache = await caches.open(CACHE);
+      const cachedResp = await cache.match(event.request);
+      
+      // Si el recurso específico no está, devuelve el index.html
+      return cachedResp || await cache.match('./index.html');
+    }
+  })());
+});
         const networkResp = await fetch(event.request);
         return networkResp;
       } catch (error) {
