@@ -28,29 +28,38 @@
   *{box-sizing:border-box;}
   body{
     margin:0;
-    background: var(--sea);
+    background-color: #F3EFE4;
     background-image:
-      radial-gradient(circle at 15% 8%, rgba(255,255,255,0.06), transparent 40%),
-      radial-gradient(circle at 90% 85%, rgba(255,255,255,0.05), transparent 45%);
-    color: var(--paper);
+      radial-gradient(circle at 15% 8%, rgba(255,255,255,0.5), transparent 40%),
+      radial-gradient(circle at 90% 85%, rgba(255,255,255,0.4), transparent 45%),
+      radial-gradient(ellipse 70% 40% at 20% 20%, rgba(210,203,185,0.5), transparent 60%),
+      radial-gradient(ellipse 60% 35% at 80% 65%, rgba(225,219,203,0.6), transparent 65%),
+      radial-gradient(ellipse 55% 30% at 45% 95%, rgba(192,138,46,0.06), transparent 60%),
+      repeating-linear-gradient(128deg, rgba(15,42,56,0.10) 0px, rgba(15,42,56,0.10) 1px, transparent 2px, transparent 90px),
+      repeating-linear-gradient(128deg, rgba(255,255,255,0.65) 2px, rgba(255,255,255,0.65) 3px, transparent 4px, transparent 90px),
+      repeating-linear-gradient(38deg, rgba(15,42,56,0.06) 0px, rgba(15,42,56,0.06) 1px, transparent 1px, transparent 140px),
+      repeating-linear-gradient(70deg, rgba(192,138,46,0.05) 0px, rgba(192,138,46,0.05) 1px, transparent 1px, transparent 60px),
+      linear-gradient(165deg, #F7F3E8 0%, #ECE6D6 45%, #F3EFE4 100%);
+    background-attachment: fixed;
+    color: var(--ink);
     font-family: 'IBM Plex Mono', monospace;
     min-height: 100vh;
     padding-bottom: 60px;
   }
   .wrap{ max-width: 680px; margin: 0 auto; padding: 32px 18px 0 18px; }
 
-  header{ border-bottom: 1px solid rgba(239,233,220,0.25); padding-bottom: 18px; margin-bottom: 18px; }
+  header{ border-bottom: 1px solid rgba(15,42,56,0.18); padding-bottom: 18px; margin-bottom: 18px; }
   h1{
     font-family:'Cinzel', serif; font-weight: 600; font-size: 1.7rem; line-height: 1.15;
-    margin: 0 0 6px 0; color: var(--white); letter-spacing: -0.01em;
+    margin: 0 0 6px 0; color: var(--sea); letter-spacing: -0.01em;
   }
-  .sub{ font-size: 0.8rem; color: rgba(239,233,220,0.7); line-height: 1.5; max-width: 52ch; }
+  .sub{ font-size: 0.8rem; color: rgba(15,42,56,0.65); line-height: 1.5; max-width: 52ch; }
 
   /* Tabs */
-  .tabs{ display:flex; gap:2px; margin: 20px 0 18px 0; border-bottom: 1px solid rgba(239,233,220,0.2); }
+  .tabs{ display:flex; gap:2px; margin: 20px 0 18px 0; border-bottom: 1px solid rgba(15,42,56,0.15); }
   .tab{
     flex:1; text-align:center; padding: 10px 4px; font-size: 0.72rem; letter-spacing:0.02em;
-    color: rgba(239,233,220,0.55); cursor:pointer; border-bottom: 2px solid transparent;
+    color: rgba(15,42,56,0.5); cursor:pointer; border-bottom: 2px solid transparent;
     background:none; border-top:none; border-left:none; border-right:none; font-family:inherit;
   }
   .tab.active{ color: var(--gold); border-bottom-color: var(--gold); }
@@ -69,21 +78,21 @@
     background: rgba(0,0,0,0.15); padding: 14px; font-size: 0.72rem;
   }
   .config-grid .field-c{ display:flex; flex-direction:column; gap:4px; }
-  .config-grid label{ color: rgba(239,233,220,0.6); }
+  .config-grid label{ color: rgba(15,42,56,0.55); }
   .config-grid input{
-    background: rgba(239,233,220,0.08); border: 1px solid rgba(239,233,220,0.25); color: var(--white);
+    background: rgba(15,42,56,0.05); border: 1px solid rgba(15,42,56,0.25); color: var(--ink);
     padding: 5px 7px; font-family: inherit; font-size: 0.78rem;
   }
-  .status{ font-size: 0.7rem; color: rgba(239,233,220,0.5); margin-top: 8px; grid-column: 1/-1; }
+  .status{ font-size: 0.7rem; color: rgba(15,42,56,0.45); margin-top: 8px; grid-column: 1/-1; }
   .status.err{ color: #E0A66B; }
   button.refresh{
-    grid-column: 1/-1; background:none; border: 1px solid rgba(239,233,220,0.35); color: var(--paper);
+    grid-column: 1/-1; background:none; border: 1px solid rgba(15,42,56,0.3); color: var(--ink);
     font-family: inherit; font-size: 0.7rem; padding: 6px 10px; cursor: pointer;
   }
   button.refresh:hover{ border-color: var(--gold); color: var(--gold); }
 
   /* Cards */
-  .card{ background: var(--paper); color: var(--ink); padding: 22px 18px; margin-bottom: 16px; }
+  .card{ background: var(--paper); color: var(--ink); padding: 22px 18px; margin-bottom: 16px; box-shadow: 0 8px 24px rgba(15,42,56,0.12); border: 1px solid rgba(15,42,56,0.08); }
 
   .hero{ text-align:left; }
   .hero .flag-line{
@@ -145,7 +154,7 @@
   .empty-hist{ font-size: 0.78rem; color: var(--sage); padding: 20px 0; text-align:center; }
 
   .note{ margin-top: 18px; font-size: 0.7rem; color: rgba(15,42,56,0.6); line-height: 1.6; border-left: 2px solid var(--gold); padding-left: 12px; }
-  footer{ max-width: 680px; margin: 20px auto 0 auto; padding: 0 18px; font-size: 0.68rem; color: rgba(239,233,220,0.4); }
+  footer{ max-width: 680px; margin: 20px auto 0 auto; padding: 0 18px; font-size: 0.68rem; color: rgba(15,42,56,0.35); }
 
   @media (max-width: 480px){
     h1{ font-size: 1.4rem; }
@@ -171,7 +180,14 @@
     background-color: #050505 !important;
     background-image: 
       radial-gradient(circle at 15% 8%, rgba(192, 138, 46, 0.08), transparent 40%),
-      radial-gradient(circle at 90% 85%, rgba(192, 138, 46, 0.05), transparent 45%) !important;
+      radial-gradient(circle at 90% 85%, rgba(192, 138, 46, 0.05), transparent 45%),
+      radial-gradient(ellipse 60% 35% at 25% 30%, rgba(20,20,20,0.6), transparent 65%),
+      radial-gradient(ellipse 55% 30% at 75% 72%, rgba(15,15,15,0.5), transparent 60%),
+      repeating-linear-gradient(122deg, rgba(192,138,46,0.10) 0px, rgba(192,138,46,0.10) 1px, transparent 2px, transparent 100px),
+      repeating-linear-gradient(122deg, rgba(0,0,0,0.7) 2px, rgba(0,0,0,0.7) 3px, transparent 4px, transparent 100px),
+      repeating-linear-gradient(46deg, rgba(242,239,233,0.03) 0px, rgba(242,239,233,0.03) 1px, transparent 1px, transparent 150px),
+      linear-gradient(160deg, #070707 0%, #0a0a0a 50%, #050505 100%) !important;
+    background-attachment: fixed;
     color: #F2EFE9 !important;
   }
 
