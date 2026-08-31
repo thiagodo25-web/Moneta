@@ -497,7 +497,10 @@ readConfig();
 calculate();
 calculateBudget();
 renderHistory();
-fetchRates();
+fetchRates().catch(() => {
+  readConfig();
+  calculate();
+});
 </script>
 </body>
 </html>
