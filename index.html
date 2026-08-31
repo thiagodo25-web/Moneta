@@ -166,27 +166,98 @@
     padding: 12px; margin-bottom: 14px; font-size: 0.75rem; display: none; 
   }
 
-  /* NUEVO: Contraste OLED y Estética Romana */
+  /* NUEVO: Contraste OLED y Estética de Mármol Imperial */
   body.oled {
-    --sea: #000000;       /* Negro puro OLED para el fondo */
-    --paper: #0A0A0A;     /* Negro casi puro para las tarjetas */
-    --ink: #EFE9DC;       /* El texto principal pasa a color hueso */
-    --white: #000000;     /* Inputs en negro */
+    /* Ajuste de paleta completa para modo oscuro */
+    --sea: #050505;       /* Negro base */
+    --paper: #111111;     /* Fondo base de reemplazo */
+    --ink: #F2EFE9;       /* Texto principal (blanco hueso) */
+    --white: #1A1A1A;     /* Color oscuro para los inputs */
     --line: rgba(192, 138, 46, 0.25); /* Líneas sutilmente doradas */
-    --sage: #8A9A7B;      /* Verde empolvado más claro para leer en negro */
+    --sage: #A9B89E;      /* Verde empolvado más claro para leer bien en negro */
+    --green: #89B373;     /* Verde brillante para éxitos */
+    --red: #D67258;       /* Rojo desaturado para errores/borrar */
+    
+    /* Textura de Mármol Oscuro (SVG fractal) + Reflejo Dorado */
+    background-color: #030303;
+    background-image: 
+      url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.015' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.06' style='mix-blend-mode: screen;'/%3E%3C/svg%3E"), 
+      radial-gradient(ellipse at 50% 0%, rgba(192, 138, 46, 0.12) 0%, transparent 70%);
   }
+  
+  /* Tarjetas con efecto vidrio sobre el mármol */
   body.oled .card {
-    border: 1px solid var(--line);
-    box-shadow: 0 8px 24px rgba(0,0,0,0.8);
+    background: rgba(12, 12, 12, 0.75);
+    backdrop-filter: blur(12px); /* Desenfoca el fondo de mármol */
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(192, 138, 46, 0.2);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.8);
+    border-radius: 8px;
   }
-  body.oled input, body.oled select {
-    border: 1px solid rgba(192, 138, 46, 0.4); 
-    color: var(--gold); 
-  }
+  
+  /* Textos secundarios y pestañas */
+  body.oled header { border-bottom: 1px solid var(--line); }
+  body.oled .sub { color: rgba(242, 239, 233, 0.6); }
+  body.oled .tab { color: rgba(242, 239, 233, 0.4); }
   body.oled .tab.active {
-    text-shadow: 0 0 10px rgba(192, 138, 46, 0.3);
+    color: var(--gold);
+    border-bottom-color: var(--gold);
+    text-shadow: 0 0 12px rgba(192, 138, 46, 0.4);
   }
+
+  /* Entradas de datos (Inputs) */
+  body.oled input, body.oled select {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(192, 138, 46, 0.3); 
+    color: var(--ink); 
+  }
+  body.oled input:focus, body.oled select:focus {
+    border-color: var(--gold);
+    outline: none;
+    background: rgba(192, 138, 46, 0.05);
+  }
+  
+  /* Resaltados dorados en la calculadora */
   body.oled .euro-input input { color: var(--gold); }
+  body.oled .euro-input { border-bottom-color: rgba(192, 138, 46, 0.5); }
+  
+  /* Botones Rápidos (Coperto/Propina) */
+  body.oled .q-btn {
+    background: rgba(192, 138, 46, 0.08);
+    border: 1px solid rgba(192, 138, 46, 0.2);
+    color: var(--gold);
+  }
+  body.oled .q-btn:hover { background: rgba(192, 138, 46, 0.2); }
+  
+  /* Caja de "Mejor Opción" */
+  body.oled .best-box {
+    background: rgba(192, 138, 46, 0.1);
+    border-left-color: var(--gold);
+    color: var(--gold);
+  }
+  body.oled table.compare tr.best td { color: var(--gold); }
+  
+  /* Botón Principal (Añadir al historial) */
+  body.oled button.primary {
+    background: linear-gradient(135deg, #C08A2E 0%, #8A5F19 100%);
+    color: #000;
+    font-weight: bold;
+  }
+  body.oled button.primary:hover {
+    background: linear-gradient(135deg, #D49D3A 0%, #A37322 100%);
+  }
+
+  /* Grilla del historial */
+  body.oled .totals-grid .t-item {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(192, 138, 46, 0.15);
+    border-radius: 4px;
+  }
+  body.oled table.compare th, body.oled table.history th { color: var(--sage); }
+  body.oled .scenario, body.oled table.compare th, body.oled table.compare td, 
+  body.oled table.history th, body.oled table.history td {
+    border-bottom-color: rgba(192, 138, 46, 0.15);
+  }
 </style>
 </head>
 <body>
