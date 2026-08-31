@@ -481,8 +481,9 @@ document.getElementById('exportBtn').addEventListener('click', exportCSV);
 document.getElementById('historyBody').addEventListener('click', (e) => {
   if(e.target.classList.contains('del')){
     history.splice(parseInt(e.target.dataset.idx), 1);
-    saveHistory(); renderHistory()
-  });
+    saveHistory(); renderHistory();
+  }
+});
 
 // REGISTRO DE SERVICE WORKER PARA MODO OFFLINE
   if ('serviceWorker' in navigator) {
