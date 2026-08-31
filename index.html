@@ -153,6 +153,42 @@
     .totals-grid{ grid-template-columns: 1fr 1fr; }
     table.compare{ font-size: 0.6rem; }
   }
+
+/* NUEVO: Coperto, Propina y Tax Free */
+  .quick-btn-row { display: flex; gap: 8px; margin-bottom: 18px; }
+  .q-btn { 
+    background: rgba(15,42,56,0.08); border: 1px solid rgba(15,42,56,0.2); 
+    color: var(--ink); border-radius: 4px; padding: 8px; font-size: 0.75rem; 
+    cursor: pointer; flex: 1; text-align: center; font-family: inherit; font-weight: 600;
+  }
+  .q-btn:hover { background: var(--sea); color: var(--white); border-color: var(--sea); }
+  .tax-free-box { 
+    background: rgba(192,138,46,0.1); border-left: 3px solid var(--gold); 
+    padding: 12px; margin-bottom: 14px; font-size: 0.75rem; display: none; 
+  }
+  .tax-free-box.active { display: block; }
+
+  /* NUEVO: Contraste OLED y Estética Romana */
+  body.oled {
+    --sea: #000000;       /* Negro puro OLED para el fondo */
+    --paper: #0A0A0A;     /* Negro casi puro para las tarjetas */
+    --ink: #EFE9DC;       /* El texto principal pasa a color hueso */
+    --white: #000000;     /* Inputs en negro */
+    --line: rgba(192, 138, 46, 0.25); /* Líneas sutilmente doradas */
+    --sage: #8A9A7B;      /* Verde empolvado más claro para leer en negro */
+  }
+  body.oled .card {
+    border: 1px solid var(--line);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.8);
+  }
+  body.oled input, body.oled select {
+    border: 1px solid rgba(192, 138, 46, 0.4); 
+    color: var(--gold); 
+  }
+  body.oled .tab.active {
+    text-shadow: 0 0 10px rgba(192, 138, 46, 0.3);
+  }
+  body.oled .euro-input input { color: var(--gold); }
 </style>
 </head>
 <body>
@@ -161,15 +197,18 @@
     <h1> Moneta <img src="coin2.png" alt="coin2" style="width:70px; height:70px; display:block; margin-bottom:14px;"> Euro → Peso · Calculadora para viajes </h1>
     <div class="sub">Comparación real entre pagar en euros con tarjeta, cancelar el resumen en dólares propios, pagar en efectivo o aceptar la conversión del posnet (DCC). Todos los impuestos son configurables.</div>
 
+    <!-- NUEVO: Botón Modo OLED Imperial -->
+    <button id="themeToggle" style="background:none; border:1px solid var(--gold); color:var(--gold); font-family:'Cinzel', serif; padding:6px 12px; margin: 12px 0; cursor:pointer; font-size:0.75rem; border-radius:4px;">🏛️ Activar Modo Imperial (OLED)</button>
+
     <details class="config">
       <summary>Cotizaciones e impuestos aplicados</summary>
       <div class="config-grid">
-        <div class="field-c"><label>EUR/USD (red Visa/Mastercard)</label><input type="number" step="0.0001" id="cfgEurUsd" value="1.16"></div>
-        <div class="field-c"><label>Dólar oficial venta ($)</label><input type="number" step="0.01" id="cfgOficial" value="1540"></div>
-        <div class="field-c"><label>Percepción Ganancias/Bs. Personales (%)</label><input type="number" step="1" id="cfgPercepcion" value="30"></div>
-        <div class="field-c"><label>Costo USD propio — MEP ($/US$)</label><input type="number" step="0.01" id="cfgMep" value="1540"></div>
-        <div class="field-c"><label>Costo euro efectivo — cueva ($/€)</label><input type="number" step="0.01" id="cfgCashEur" value="1780"></div>
-        <div class="field-c"><label>Margen DCC en el posnet (%)</label><input type="number" step="0.5" id="cfgDcc" value="6"></div>
+        <div class="field-c"><label>EUR/USD (red Visa/Mastercard)</label><input type="number" step="0.0001" id="cfgEurUsd" value="1.16" inputmode="decimal"></div>
+        <div class="field-c"><label>Dólar oficial venta ($)</label><input type="number" step="0.01" id="cfgOficial" value="1540" inputmode="decimal"></div>
+        <div class="field-c"><label>Percepción Ganancias/Bs. Personales (%)</label><input type="number" step="1" id="cfgPercepcion" value="30" inputmode="decimal"></div>
+        <div class="field-c"><label>Costo USD propio — MEP ($/US$)</label><input type="number" step="0.01" id="cfgMep" value="1540" inputmode="decimal"></div>
+        <div class="field-c"><label>Costo euro efectivo — cueva ($/€)</label><input type="number" step="0.01" id="cfgCashEur" value="1780" inputmode="decimal"></div>
+        <div class="field-c"><label>Margen DCC en el posnet (%)</label><input type="number" step="0.5" id="cfgDcc" value="6" inputmode="decimal"></div>
         <div class="status" id="statusMsg">Buscando cotizaciones…</div>
         <button class="refresh" id="refreshBtn">Actualizar EUR/USD, oficial y MEP</button>
       </div>
@@ -188,10 +227,17 @@
       <div class="flag-line">🇮🇹 ¿Cuánto me cuesta realmente esta compra en Italia?</div>
       <div class="euro-input"><span>€</span><input type="number" id="eurInput" value="400" min="0" step="0.01" inputmode="decimal"></div>
 
+      <!-- NUEVO: Botones rápidos -->
+      <div class="quick-btn-row">
+        <button class="q-btn" onclick="addMonto(1)">+1€ Coperto</button>
+        <button class="q-btn" onclick="addMonto(2)">+2€ Coperto</button>
+        <button class="q-btn" onclick="addMonto('%10')">+10% Propina</button>
+      </div>
       <div class="scenario">
         <div class="label">Pagando en EUR con tarjeta — equivalente liquidado</div>
         <div class="amt" id="scnLiquidado">≈ US$ —</div>
       </div>
+      
       <div class="scenario">
         <div class="label">Cancelando el resumen en USD propios (MEP/ahorros)</div>
         <div class="amt sub" id="scnUsdPropio">≈ $ — ARS reales</div>
@@ -331,12 +377,30 @@ async function fetchRates(){
     document.getElementById('cfgEurUsd').value = fx.rates.USD;
     document.getElementById('cfgCashEur').value = (mep.venta * fx.rates.USD).toFixed(2);
 
-    statusEl.textContent = 'Actualizado: ' + new Date().toLocaleString('es-AR') + ' — la percepción, el efectivo y el margen DCC quedan como los configures vos.';
+    const timestamp = new Date().toLocaleString('es-AR');
+    statusEl.textContent = 'Actualizado: ' + timestamp + ' — la percepción, el efectivo y el margen DCC quedan como los configures vos.';
     readConfig();
+    
+    // NUEVO: Guardar respaldo offline
+    localStorage.setItem('euroApp_offlineRates', JSON.stringify({ rates: rates, time: timestamp }));
     calculate();
   }catch(err){
-    statusEl.textContent = 'No se pudieron traer las cotizaciones automáticamente. Los campos ya tienen valores de referencia — ajustalos a mano si hace falta.';
-    statusEl.classList.add('err');
+    // NUEVO: Recuperar respaldo si no hay internet
+    const backupStr = localStorage.getItem('euroApp_offlineRates');
+    if (backupStr) {
+      const backup = JSON.parse(backupStr);
+      document.getElementById('cfgOficial').value = backup.rates.oficialVenta;
+      document.getElementById('cfgMep').value = backup.rates.mepVenta;
+      document.getElementById('cfgEurUsd').value = backup.rates.eurUsd;
+      document.getElementById('cfgCashEur').value = backup.rates.cashEurVenta;
+      readConfig();
+      statusEl.textContent = '⚠️ Modo offline: usando cotizaciones del ' + backup.time;
+      statusEl.classList.add('err');
+      calculate();
+    } else {
+      statusEl.textContent = 'Sin conexión y sin datos previos. Ajustá los valores a mano.';
+      statusEl.classList.add('err');
+    }
   }
 }
 
@@ -481,6 +545,39 @@ document.getElementById('historyBody').addEventListener('click', (e) => {
   if(e.target.classList.contains('del')){
     history.splice(parseInt(e.target.dataset.idx), 1);
     saveHistory(); renderHistory();
+  }
+});
+
+// NUEVO: Sumar Coperto o Propina al input
+function addMonto(val) {
+  const input = document.getElementById('eurInput');
+  let actual = parseFloat(input.value) || 0;
+  if (val === '%10') {
+    actual = actual * 1.10; // Suma el 10%
+  } else {
+    actual += parseFloat(val); // Suma monto fijo
+  }
+  input.value = actual.toFixed(2);
+  calculate();
+}
+
+  // NUEVO: Lógica del Modo OLED Imperial
+const themeBtn = document.getElementById('themeToggle');
+const isOled = localStorage.getItem('euroApp_theme') === 'oled';
+
+if (isOled) {
+  document.body.classList.add('oled');
+  themeBtn.textContent = '☀ Desactivar Modo Imperial';
+}
+
+themeBtn.addEventListener('click', () => {
+  document.body.classList.toggle('oled');
+  if (document.body.classList.contains('oled')) {
+    localStorage.setItem('euroApp_theme', 'oled');
+    themeBtn.textContent = '☀ Desactivar Modo Imperial';
+  } else {
+    localStorage.setItem('euroApp_theme', 'light');
+    themeBtn.textContent = '🏛️ Activar Modo Imperial (OLED)';
   }
 });
 
