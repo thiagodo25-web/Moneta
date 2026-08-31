@@ -166,52 +166,98 @@
     padding: 12px; margin-bottom: 14px; font-size: 0.75rem; display: none; 
   }
 
- /* NUEVO: Contraste OLED y Estética de Mármol Imperial */
-  body.oled {
-    --sea: #050505;       /* Fondo principal a negro profundo */
-    --paper: #0D0D0D;     /* Fondo de las tarjetas */
-    --ink: #F2EFE9;       /* Textos pasan a blanco hueso */
-    --white: #1A1A1A;     /* Campos de input oscuros */
-    --sage: #A9B89E;      /* Textos secundarios en verde pálido */
-    --line: rgba(192, 138, 46, 0.25);
+/* NUEVO: Contraste OLED Imperial Definitivo */
+  html.oled body {
+    background-color: #050505 !important;
     background-image: 
       radial-gradient(circle at 15% 8%, rgba(192, 138, 46, 0.08), transparent 40%),
       radial-gradient(circle at 90% 85%, rgba(192, 138, 46, 0.05), transparent 45%) !important;
+    color: #F2EFE9 !important;
   }
-  
-  /* Tarjetas con efecto vidrio esmerilado */
-  body.oled .card {
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(192, 138, 46, 0.15);
+
+  html.oled .card {
+    background: #0D0D0D !important;
+    border: 1px solid rgba(192, 138, 46, 0.2) !important;
     box-shadow: 0 12px 32px rgba(0,0,0,0.8);
+    color: #F2EFE9 !important;
+  }
+
+  /* Forzar todos los textos secundarios y etiquetas que estaban fijos */
+  html.oled .sub, html.oled .tab, html.oled .config-grid label, 
+  html.oled .status, html.oled footer, html.oled .note { 
+    color: rgba(242, 239, 233, 0.6) !important; 
   }
   
-  /* Pestañas y resaltados dorados */
-  body.oled .tab.active { text-shadow: 0 0 12px rgba(192, 138, 46, 0.4); }
-  body.oled .euro-input input { color: var(--gold); }
-  body.oled .euro-input { border-bottom-color: rgba(192, 138, 46, 0.5); }
-  
-  body.oled input:focus, body.oled select:focus {
-    border-color: var(--gold);
-    background: rgba(192, 138, 46, 0.05);
-    outline: none;
+  html.oled .tab.active {
+    color: #C08A2E !important;
+    border-bottom-color: #C08A2E !important;
+    text-shadow: 0 0 10px rgba(192, 138, 46, 0.4);
   }
-  body.oled select option { background: #111; color: var(--ink); }
-  
-  body.oled .q-btn { border-color: rgba(192, 138, 46, 0.3); color: var(--gold); }
-  body.oled .q-btn:hover { background: rgba(192, 138, 46, 0.15); }
-  
-  body.oled .best-box { background: rgba(192, 138, 46, 0.1); border-left-color: var(--gold); color: var(--gold); }
-  body.oled table.compare tr.best td { color: var(--gold); }
-  
-  body.oled button.primary {
-    background: linear-gradient(135deg, #C08A2E 0%, #8A5F19 100%);
-    color: #000; font-weight: bold; border: none;
+
+  /* Bordes de tablas y separadores */
+  html.oled header, html.oled .tabs, html.oled .scenario, 
+  html.oled table.compare th, html.oled table.compare td, 
+  html.oled table.history th, html.oled table.history td {
+    border-color: rgba(192, 138, 46, 0.2) !important;
   }
-  body.oled button.primary:hover { background: linear-gradient(135deg, #D49D3A 0%, #A37322 100%); }
-  
-  body.oled .totals-grid .t-item { border: 1px solid var(--line); }
+
+  /* Inputs y selects */
+  html.oled input, html.oled select {
+    background: #1A1A1A !important;
+    border: 1px solid rgba(192, 138, 46, 0.3) !important;
+    color: #F2EFE9 !important;
+  }
+  html.oled input:focus, html.oled select:focus {
+    border-color: #C08A2E !important;
+    background: rgba(192, 138, 46, 0.05) !important;
+  }
+  html.oled select option { background: #111; color: #F2EFE9; }
+
+  /* Input principal de Euros */
+  html.oled .euro-input input { color: #C08A2E !important; }
+  html.oled .euro-input { border-bottom-color: rgba(192, 138, 46, 0.5) !important; }
+
+  /* Textos guía en verde salvia oscuro */
+  html.oled .scenario .label, html.oled .field label, 
+  html.oled table.compare th, html.oled table.history th, 
+  html.oled .totals-grid .t-item .l {
+    color: #A9B89E !important;
+  }
+
+  /* Montos numéricos destacados en blanco puro para lectura */
+  html.oled .scenario .amt, html.oled .scenario .amt.sub, 
+  html.oled .budget-result .big, html.oled .totals-grid .t-item .v {
+    color: #FFFFFF !important;
+  }
+
+  /* Botones y cajas especiales */
+  html.oled .q-btn { 
+    border-color: rgba(192, 138, 46, 0.3) !important; 
+    color: #C08A2E !important; 
+    background: rgba(192, 138, 46, 0.08) !important; 
+  }
+  html.oled .q-btn:hover { background: rgba(192, 138, 46, 0.15) !important; }
+
+  html.oled .best-box {
+    background: rgba(192, 138, 46, 0.1) !important;
+    border-left-color: #C08A2E !important;
+    color: #C08A2E !important;
+  }
+  html.oled table.compare tr.best td { color: #C08A2E !important; }
+
+  html.oled button.primary {
+    background: linear-gradient(135deg, #C08A2E 0%, #8A5F19 100%) !important;
+    color: #000 !important;
+    font-weight: bold !important;
+  }
+  html.oled button.secondary, html.oled button.refresh {
+    border-color: rgba(192, 138, 46, 0.3) !important; 
+    color: #C08A2E !important;
+  }
+  html.oled .totals-grid .t-item { 
+    background: rgba(255,255,255,0.02) !important; 
+    border: 1px solid rgba(192, 138, 46, 0.15) !important; 
+  }
 </style>
 </head>
 <body>
@@ -590,14 +636,14 @@ const isOled = localStorage.getItem('euroApp_theme') === 'oled';
 const metaTheme = document.querySelector('meta[name="theme-color"]');
 
 if (isOled) {
-  document.body.classList.add('oled');
+  document.documentElement.classList.add('oled');
   themeBtn.textContent = '☀ Desactivar Modo Imperial';
   if (metaTheme) metaTheme.setAttribute('content', '#050505');
 }
 
 themeBtn.addEventListener('click', () => {
-  document.body.classList.toggle('oled');
-  if (document.body.classList.contains('oled')) {
+  document.documentElement.classList.toggle('oled');
+  if (document.documentElement.classList.contains('oled')) {
     localStorage.setItem('euroApp_theme', 'oled');
     themeBtn.textContent = '☀ Desactivar Modo Imperial';
     if (metaTheme) metaTheme.setAttribute('content', '#050505');
