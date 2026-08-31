@@ -10,6 +10,7 @@
 <meta name="apple-mobile-web-app-title" content="Euro→Peso">
 <meta name="theme-color" content="#1B4F63">
 <link rel="manifest" href="manifest.json">
+<link rel="serviceworker" href="./pwabuilder-sw.js">
 <link rel="apple-touch-icon" href="icon-192.png">
 <link rel="icon" href="icon-192.png">
 <style>
@@ -481,6 +482,25 @@ document.getElementById('historyBody').addEventListener('click', (e) => {
   if(e.target.classList.contains('del')){
     history.splice(parseInt(e.target.dataset.idx), 1);
     saveHistory(); renderHistory();
+
+   // REGISTRO DE SERVICE WORKER PARA MODO OFFLINE
+  if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./pwabuilder-sw.js')
+      .then(reg => console.log('Service Worker listo:', reg))
+      .catch(err => console.error('Error al registrar SW:', err));
+  });
+}
+
+readConfig();
+calculate();
+calculateBudget();
+renderHistory();
+fetchRates();
+</script>
+</body>
+</html>
+
   }
 });
 
