@@ -1,6 +1,6 @@
 {
-  "name": "Euro a Pesos",
-  "short_name": "Euro→Peso",
+  "name": "Moneta",
+  "short_name": "Moneta",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#1B4F63",
