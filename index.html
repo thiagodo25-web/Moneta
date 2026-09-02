@@ -353,6 +353,34 @@
         El "margen DCC" simula lo que cobra el posnet cuando aceptás pagar directamente en tu moneda en el comercio — normalmente es la peor opción y sigue sujeto a la misma percepción, porque el banco lo sigue viendo como consumo en el exterior. Ajustá el % de percepción a 0 si viajás con una tarjeta o cuenta exenta, o si la normativa cambia.
       </div>
     </div>
+
+    <!-- FREE SHOP -->
+    <div class="card" id="freeShopCard">
+      <h2 class="section-title">🛍️ Free Shop</h2>
+      <div class="field-row">
+        <div class="field">
+          <label>Monto</label>
+          <input type="number" id="fsMonto" value="0" min="0" step="0.01" inputmode="decimal">
+        </div>
+        <div class="field">
+          <label>Moneda del precio</label>
+          <select id="fsMoneda">
+            <option value="usd">USD</option>
+            <option value="eur">EUR</option>
+          </select>
+        </div>
+      </div>
+      <div class="field" style="display:flex; align-items:center; gap:8px;">
+        <input type="checkbox" id="fsArgentino" style="width:auto;" checked>
+        <label for="fsArgentino" style="margin:0; color:var(--ink); font-size:0.78rem;">Es un free shop en Argentina (Ezeiza, Aeroparque, etc.) — sin percepción del 30%</label>
+      </div>
+      <button class="primary" id="fsCalcBtn">Calcular</button>
+      <div class="budget-result" id="fsResultBox" style="display:none;">
+        <div class="label" style="font-size:0.75rem;color:var(--sage);">Costo en pesos</div>
+        <div class="big" id="fsResult">$ —</div>
+        <div class="note" id="fsNote" style="margin-top:12px;"></div>
+      </div>
+    </div>
   </div>
 
   <!-- PRESUPUESTO DIARIO -->
@@ -594,6 +622,31 @@ function exportCSV(){
   a.href = url; a.download = 'gastos-italia.csv'; a.click();
   URL.revokeObjectURL(url);
 }
+
+function calculateFreeShop(){
+  const monto = parseFloat(document.getElementById('fsMonto').value) || 0;
+  const moneda = document.getElementById('fsMoneda').value;
+  const esArgentino = document.getElementById('fsArgentino').checked;
+
+  const usdEquivalente = moneda === 'eur' ? monto * rates.eurUsd : monto;
+  let costoARS, nota;
+
+  if(esArgentino){
+    costoARS = usdEquivalente * rates.oficialVenta;
+    nota = 'Free shop argentino: se paga al dólar oficial ($' + fmt(rates.oficialVenta,2) + '), sin la percepción del 30%, sea en efectivo o con tarjeta.';
+  } else {
+    const tarjetaRate = rates.oficialVenta * (1 + rates.percepcion / 100);
+    costoARS = usdEquivalente * tarjetaRate;
+    nota = 'Free shop en el exterior: es un comercio más del país que visitás, así que tu tarjeta lo liquida como cualquier otro consumo — dólar tarjeta ($' + fmt(tarjetaRate,2) + ') con la percepción configurada (' + rates.percepcion + '%).';
+  }
+
+  document.getElementById('fsResult').textContent = '$ ' + fmt(costoARS);
+  document.getElementById('fsNote').textContent = nota;
+  document.getElementById('fsResultBox').style.display = 'block';
+}
+
+document.getElementById('fsCalcBtn').addEventListener('click', calculateFreeShop);
+document.getElementById('fsArgentino').addEventListener('change', calculateFreeShop);
 
 document.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => {
   document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
